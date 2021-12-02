@@ -1,0 +1,15 @@
+{
+  "name": "advent-of-code-2021",
+  "version": "1.0.0",
+  "description": "my solutions for advent of code 2021",
+  "main": "index.js",
+  "author": "v-larcher",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.0"
+  }
+}
