@@ -12,56 +12,40 @@ const formatData = input => {
   return crabsPosition
 }
 
-const calculateFuelFromOnePosition = (crabsPosition, position) => {
+const calculateFuelCostFromOnePosition = (currentPosition, positionCompared, nbCrabs, increasingFuelCost) => {
+  const nbMovement = Math.abs(currentPosition - positionCompared)
+
+  if (!increasingFuelCost) {
+    return nbMovement * nbCrabs
+  }
+  return ((nbMovement + 1) / 2) * nbMovement * nbCrabs
+}
+
+const calculateFuelCost = (crabsPosition, position, increasingFuelCost) => {
   let fuel = 0
 
   crabsPosition.forEach((nbCrabs, index) => {
-    const nbMovement = Math.abs(position - index)
-    fuel += nbMovement * nbCrabs
+    fuel += calculateFuelCostFromOnePosition(position, index, nbCrabs, increasingFuelCost)
   })
 
   return fuel
 }
 
-const firstSolution = input => {
-  const crabsPosition = formatData(input)
+const calculateAllFuelCost = (crabsPosition, increasingFuelCost = false) => {
   let fuels = []
 
   times(crabsPosition.length, position => {
-    fuels.push(calculateFuelFromOnePosition(crabsPosition, position))
+    fuels.push(calculateFuelCost(crabsPosition, position, increasingFuelCost))
   })
-
   return min(fuels)
 }
 
-const increasingFuelCost = (num, nbCrabs) => {
-  let fuel = 0
-  times(num, cost => {
-    fuel += (cost + 1) * nbCrabs
-  })
-  return fuel
+const firstSolution = crabsPosition => {
+  return calculateAllFuelCost(crabsPosition)
 }
 
-const calculateFuelFromOnePosition2 = (crabsPosition, position) => {
-  let fuel = 0
-
-  crabsPosition.forEach((nbCrabs, index) => {
-    const nbMovement = Math.abs(position - index)
-    fuel += increasingFuelCost(nbMovement, nbCrabs)
-  })
-
-  return fuel
-}
-
-const secondSolution = input => {
-  const crabsPosition = formatData(input)
-  let fuels = []
-
-  times(crabsPosition.length, position => {
-    fuels.push(calculateFuelFromOnePosition2(crabsPosition, position))
-  })
-
-  return min(fuels)
+const secondSolution = crabsPosition => {
+  return calculateAllFuelCost(crabsPosition, true)
 }
 
 const input =
@@ -69,5 +53,7 @@ const input =
     ',',
   )
 
-console.log({ firstSolution: firstSolution(input) })
-console.log({ secondSolution: secondSolution(input) })
+const crabsPosition = formatData(input)
+
+console.log({ firstSolution: firstSolution(crabsPosition) })
+console.log({ secondSolution: secondSolution(crabsPosition) })
