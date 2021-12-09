@@ -12,7 +12,12 @@ const formatData = input => {
   return crabsPosition
 }
 
-const calculateFuelCostFromOnePosition = (currentPosition, positionCompared, nbCrabs, increasingFuelCost) => {
+const calculateFuelCostFromOnePosition = (
+  currentPosition,
+  positionCompared,
+  nbCrabs,
+  increasingFuelCost,
+) => {
   const nbMovement = Math.abs(currentPosition - positionCompared)
 
   if (!increasingFuelCost) {
@@ -31,7 +36,7 @@ const calculateFuelCost = (crabsPosition, position, increasingFuelCost) => {
   return fuel
 }
 
-const calculateAllFuelCost = (crabsPosition, increasingFuelCost = false) => {
+const getMinFuelCost = (crabsPosition, increasingFuelCost = false) => {
   let fuels = []
 
   times(crabsPosition.length, position => {
@@ -41,11 +46,12 @@ const calculateAllFuelCost = (crabsPosition, increasingFuelCost = false) => {
 }
 
 const firstSolution = crabsPosition => {
-  return calculateAllFuelCost(crabsPosition)
+  return getMinFuelCost(crabsPosition)
 }
 
 const secondSolution = crabsPosition => {
-  return calculateAllFuelCost(crabsPosition, true)
+  const increasingFuelCost = true
+  return getMinFuelCost(crabsPosition, increasingFuelCost)
 }
 
 const input =
