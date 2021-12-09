@@ -47,33 +47,15 @@ const getLowPointsPositions = smokes => {
 }
 
 const firstSolution = smokes => {
-  let lowPoints = []
-  times(smokes.length, y => {
-    times(smokes[y].length, x => {
-      let isLowPoint = true
-      const point = smokes[y][x]
+  const lowPointsPositions = getLowPointsPositions(smokes)
 
-      if (x > 0 && point >= smokes[y][x - 1]) {
-        isLowPoint = false
-      } else if (x < smokes[y].length - 1 && point >= smokes[y][x + 1]) {
-        isLowPoint = false
-      } else if (y > 0 && point >= smokes[y - 1][x]) {
-        isLowPoint = false
-      } else if (y < smokes.length - 1 && point >= smokes[y + 1][x]) {
-        isLowPoint = false
-      }
-
-      if (isLowPoint) {
-        lowPoints.push(parseInt(point, 10) + 1)
-      }
-    })
-  })
+  const lowPoints = lowPointsPositions.map(({ y, x }) => parseInt(smokes[y][x], 10) + 1)
   return sum(lowPoints)
 }
 
 const secondSolution = smokes => {
   const lowPointsPositions = getLowPointsPositions(smokes)
-  let surface = []
+  let surfaces = []
 
   let allVisitedPoints = []
   lowPointsPositions.forEach(({ y, x }) => {
@@ -94,13 +76,13 @@ const secondSolution = smokes => {
       stack.push({ y: current.y, x: current.x + 1 })
       stack.push({ y: current.y, x: current.x - 1 })
     }
-    surface.push(visitedPoints.length)
+    surfaces.push(visitedPoints.length)
   })
-  surface.sort((a, b) => a - b)
+  surfaces.sort((a, b) => a - b)
 
-  const top3 = takeRight(surface, 3).reduce((acc, curr) => acc * curr)
+  const top3 = takeRight(surfaces, 3)
 
-  return top3
+  return top3.reduce((acc, curr) => acc * curr)
 }
 
 const input =
